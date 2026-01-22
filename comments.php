@@ -14,8 +14,9 @@ if ( post_password_required() ) {
 		<h2 class="comments-title">
 			<?php
 			/* translators: %s: number of comments. */
+			$count_text = _n( '%s Comment', '%s Comments', get_comments_number(), 'presstronic-legacy' );
 			printf(
-				esc_html( _n( '%s Comment', '%s Comments', get_comments_number(), 'presstronic-legacy' ) ),
+				esc_html( $count_text ),
 				esc_html( number_format_i18n( get_comments_number() ) )
 			);
 			?>

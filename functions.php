@@ -149,7 +149,7 @@ function presstronic_legacy_customize_register( $wp_customize ) {
 	);
 
 	// Text settings helper.
-	$add_text = function( $id, $label, $default_value ) use ( $wp_customize ) {
+	$add_text = function ( $id, $label, $default_value ) use ( $wp_customize ) {
 		$wp_customize->add_setting(
 			$id,
 			array(
