@@ -1,0 +1,36 @@
+name: Release Theme Zip
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-zip:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build theme zip
+        run: |
+          set -euo pipefail
+          SLUG="presstronic-legacy"
+          rm -rf dist build
+          mkdir -p build/$SLUG dist
+          rsync -a . build/$SLUG \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude 'node_modules' \
+            --exclude 'vendor' \
+            --exclude '*.log' \
+            --exclude '*.tmp' \
+            --exclude '.DS_Store'
+          (cd build && zip -r "../dist/${SLUG}.zip" "$SLUG")
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/presstronic-legacy.zip

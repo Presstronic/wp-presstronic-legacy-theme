@@ -5,6 +5,9 @@ Author: Presstronic Studios
 Author URI: https://presstronic.com/
 Description: A lightweight, fast WordPress theme that recreates the 2015 Presstronic one-page layout (hero + about + services + contact) with modern, dependency-free code.
 Version: 1.0.0
+Requires at least: 6.0
+Tested up to: 6.4
+Requires PHP: 7.4
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: presstronic-legacy
