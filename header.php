@@ -53,7 +53,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 							array(
 								'theme_location' => 'primary',
 								'container'      => false,
-								'items_wrap'     => '%3$s', // output <li> items only
+								'items_wrap'     => '%3$s', // Output <li> items only.
 								'fallback_cb'    => false,
 							)
 						);
