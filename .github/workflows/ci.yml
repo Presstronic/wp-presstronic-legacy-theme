@@ -25,3 +25,112 @@ jobs:
             -not -path "./.git/*" \
             -not -path "./vendor/*" \
             -print0 | xargs -0 -n 1 php -l
+
+  phpcs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          tools: composer
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: PHPCS (WordPress + PHPCompatibility)
+        run: vendor/bin/phpcs
+
+  phpunit:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: wordpress_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          tools: composer
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Install SVN (for WP test suite)
+        run: sudo apt-get update && sudo apt-get install -y subversion
+
+      - name: Install WordPress test suite
+        env:
+          WP_VERSION: latest
+          WP_TESTS_DIR: /tmp/wordpress-tests-lib
+          WP_CORE_DIR: /tmp/wordpress
+        run: |
+          bash bin/install-wp-tests.sh wordpress_test root root 127.0.0.1 ${WP_VERSION}
+
+      - name: PHPUnit
+        run: vendor/bin/phpunit
+
+  theme-check:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: wordpress
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+
+      - name: Install WP-CLI
+        run: |
+          curl -sSLo wp-cli.phar https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+          php wp-cli.phar --info
+
+      - name: Install WordPress
+        run: |
+          php wp-cli.phar core download --path=/tmp/wordpress --locale=en_US
+          php wp-cli.phar config create --path=/tmp/wordpress \
+            --dbname=wordpress --dbuser=root --dbpass=root --dbhost=127.0.0.1 \
+            --skip-check --force
+          php wp-cli.phar core install --path=/tmp/wordpress \
+            --url=http://localhost --title=CI --admin_user=admin --admin_password=admin --admin_email=admin@example.com
+
+      - name: Install theme into WP
+        run: |
+          rsync -a . /tmp/wordpress/wp-content/themes/presstronic-legacy \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude 'vendor' \
+            --exclude 'node_modules'
+          php wp-cli.phar theme activate presstronic-legacy --path=/tmp/wordpress
+
+      - name: Theme Check
+        run: |
+          php wp-cli.phar plugin install theme-check --activate --path=/tmp/wordpress
+          php wp-cli.phar theme-check run presstronic-legacy --format=table --path=/tmp/wordpress

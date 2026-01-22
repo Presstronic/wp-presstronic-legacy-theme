@@ -23,8 +23,15 @@ jobs:
           rsync -a . build/$SLUG \
             --exclude '.git' \
             --exclude '.github' \
+            --exclude 'bin' \
             --exclude 'node_modules' \
             --exclude 'vendor' \
+            --exclude 'tests' \
+            --exclude 'composer.json' \
+            --exclude 'composer.lock' \
+            --exclude 'phpcs.xml.dist' \
+            --exclude 'phpunit.xml.dist' \
+            --exclude 'CHANGELOG.md' \
             --exclude '*.log' \
             --exclude '*.tmp' \
             --exclude '.DS_Store'
