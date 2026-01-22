@@ -1,0 +1,14 @@
+body.block-editor-page{
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: #1f2328;
+}
+
+.editor-styles-wrapper{
+  max-width: 720px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.editor-styles-wrapper a{
+  color: #f05a45;
+}

@@ -1,4 +1,4 @@
-# Presstronic Legacy (Lightweight) — WordPress Theme
+# Presstronic Legacy — WordPress Theme
 
 A fast, dependency-free WordPress theme that recreates the classic 2015 Presstronic one-page layout:
 hero (with background image), About, Services, and Contact — including the “transparent nav on top,
@@ -36,7 +36,7 @@ solid nav on scroll” behavior and smooth-scrolling anchor navigation.
 1. Unzip into: `wp-content/themes/`
    - You should end up with: `wp-content/themes/presstronic-legacy/`
 2. In WP Admin: **Appearance → Themes**
-3. Activate **Presstronic Legacy (Lightweight)**
+3. Activate **Presstronic Legacy**
 
 ## Configure the Homepage
 

@@ -126,8 +126,15 @@ jobs:
           rsync -a . /tmp/wordpress/wp-content/themes/presstronic-legacy \
             --exclude '.git' \
             --exclude '.github' \
+            --exclude 'bin' \
             --exclude 'vendor' \
-            --exclude 'node_modules'
+            --exclude 'node_modules' \
+            --exclude 'tests' \
+            --exclude 'composer.json' \
+            --exclude 'composer.lock' \
+            --exclude 'phpcs.xml.dist' \
+            --exclude 'phpunit.xml.dist' \
+            --exclude 'CHANGELOG.md'
           php wp-cli.phar theme activate presstronic-legacy --path=/tmp/wordpress
 
       - name: Theme Check

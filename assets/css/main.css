@@ -22,6 +22,56 @@ body{
 img{ max-width:100%; height:auto; }
 a{ color: inherit; }
 
+/* Accessibility helpers */
+.screen-reader-text{
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  white-space:nowrap;
+  border:0;
+}
+.screen-reader-text:focus{
+  position:static;
+  width:auto;
+  height:auto;
+  margin:0;
+  clip:auto;
+  white-space:normal;
+}
+
+/* Core alignment classes */
+.alignleft{ float:left; margin:0 24px 16px 0; }
+.alignright{ float:right; margin:0 0 16px 24px; }
+.aligncenter{ display:block; margin:0 auto 16px; text-align:center; }
+
+/* Media and caption styles */
+.wp-caption{
+  max-width:100%;
+  background:#f7f7f7;
+  padding:8px;
+  border-radius:8px;
+  text-align:center;
+}
+.wp-caption-text,
+.gallery-caption{
+  font-size:13px;
+  opacity:.8;
+  margin-top:6px;
+}
+
+/* Post meta helpers */
+.post-thumbnail{ margin:0 0 18px; }
+.post-date{ opacity:.65; margin-top:-8px; }
+.post-tags{ font-size:13px; opacity:.8; margin-top:18px; }
+.page-links{ margin-top:12px; font-size:14px; }
+
+.sticky{ outline:2px solid rgba(0,0,0,.08); outline-offset:6px; }
+.bypostauthor .comment-body{ border-left:3px solid var(--orange); padding-left:12px; }
+
 /* Skip link */
 .skip-link{
   position:absolute; left:-9999px; top:auto;

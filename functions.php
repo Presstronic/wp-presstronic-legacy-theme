@@ -9,6 +9,18 @@ function presstronic_legacy_setup() {
   add_theme_support('title-tag');
   add_theme_support('post-thumbnails');
   add_theme_support('automatic-feed-links');
+  add_theme_support('custom-background');
+  add_theme_support('custom-header', array(
+    'width'       => 2000,
+    'height'      => 1200,
+    'flex-width'  => true,
+    'flex-height' => true,
+  ));
+  add_theme_support('responsive-embeds');
+  add_theme_support('align-wide');
+  add_theme_support('wp-block-styles');
+  add_theme_support('editor-styles');
+  add_editor_style('assets/css/editor.css');
   add_theme_support('html5', array('search-form','comment-form','comment-list','gallery','caption','style','script'));
   add_theme_support('custom-logo', array(
     'height'      => 100,
@@ -22,6 +34,19 @@ function presstronic_legacy_setup() {
   ));
 }
 add_action('after_setup_theme', 'presstronic_legacy_setup');
+
+function presstronic_legacy_widgets_init() {
+  register_sidebar(array(
+    'name'          => __('Sidebar', 'presstronic-legacy'),
+    'id'            => 'sidebar-1',
+    'description'   => __('Main sidebar area.', 'presstronic-legacy'),
+    'before_widget' => '<section id="%1$s" class="widget %2$s">',
+    'after_widget'  => '</section>',
+    'before_title'  => '<h2 class="widget-title">',
+    'after_title'   => '</h2>',
+  ));
+}
+add_action('widgets_init', 'presstronic_legacy_widgets_init');
 
 function presstronic_legacy_enqueue_assets() {
   $ver = wp_get_theme()->get('Version');
@@ -39,6 +64,13 @@ function presstronic_legacy_enqueue_assets() {
   wp_add_inline_style('presstronic-legacy-main', $inline);
 }
 add_action('wp_enqueue_scripts', 'presstronic_legacy_enqueue_assets');
+
+function presstronic_legacy_enqueue_comment_reply() {
+  if (is_singular() && comments_open() && get_option('thread_comments')) {
+    wp_enqueue_script('comment-reply');
+  }
+}
+add_action('wp_enqueue_scripts', 'presstronic_legacy_enqueue_comment_reply');
 
 function presstronic_legacy_get_hero_image_url() {
   $custom = get_theme_mod('presstronic_hero_image');
@@ -140,6 +172,31 @@ function presstronic_legacy_mod($key, $default = '') {
   $val = get_theme_mod($key, $default);
   return $val;
 }
+
+function presstronic_legacy_register_block_assets() {
+  if (function_exists('register_block_pattern')) {
+    register_block_pattern(
+      'presstronic-legacy/hero-cta',
+      array(
+        'title'       => __('Hero CTA', 'presstronic-legacy'),
+        'description' => __('A simple hero with heading, text, and button.', 'presstronic-legacy'),
+        'content'     => '<!-- wp:heading {"textAlign":"center"} --><h2 class="has-text-align-center">' . esc_html__('Build something memorable.', 'presstronic-legacy') . '</h2><!-- /wp:heading --><!-- wp:paragraph {"align":"center"} --><p class="has-text-align-center">' . esc_html__('Launch your next product with a fast, focused theme.', 'presstronic-legacy') . '</p><!-- /wp:paragraph --><!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} --><div class="wp-block-buttons"><!-- wp:button {"className":"is-style-outline"} --><div class="wp-block-button is-style-outline"><a class="wp-block-button__link">' . esc_html__('Get Started', 'presstronic-legacy') . '</a></div><!-- /wp:button --></div><!-- /wp:buttons -->',
+        'categories'  => array('buttons', 'text'),
+      )
+    );
+  }
+
+  if (function_exists('register_block_style')) {
+    register_block_style(
+      'core/button',
+      array(
+        'name'  => 'presstronic-ghost',
+        'label' => __('Ghost Button', 'presstronic-legacy'),
+      )
+    );
+  }
+}
+add_action('init', 'presstronic_legacy_register_block_assets');
 
 // CF7 anti-spam: honeypot + time check.
 function presstronic_cf7_add_honeypot($content) {
