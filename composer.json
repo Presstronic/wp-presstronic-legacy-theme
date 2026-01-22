@@ -11,6 +11,11 @@
     "wp-coding-standards/wpcs": "^3.1",
     "yoast/phpunit-polyfills": "^3.0"
   },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  },
   "scripts": {
     "lint": "phpcs",
     "test": "phpunit"
