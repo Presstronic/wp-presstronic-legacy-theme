@@ -11,6 +11,8 @@ Tags: one-column, custom-background, custom-logo, custom-menu, featured-images, 
 == Description ==
 A lightweight, fast WordPress theme that recreates the 2015 Presstronic one-page layout (hero + about + services + contact) with modern, dependency-free code.
 
+Theme demo: https://presstronic.com/
+
 == Installation ==
 1. In your admin panel, go to Appearance -> Themes and click the Add New button.
 2. Click Upload Theme and choose the presstronic-legacy zip.
@@ -29,6 +31,10 @@ The theme ships with a minimal, curated design. Customizer controls are focused 
 == Changelog ==
 = 1.0.0 =
 * Initial release.
+
+== Upgrade Notice ==
+= 1.0.0 =
+Initial release.
 
 == Resources ==
 * Bundled header background photo: Provided by Presstronic Studios.
