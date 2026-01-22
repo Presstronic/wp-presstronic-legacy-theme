@@ -132,5 +132,11 @@ jobs:
 
       - name: Theme Check
         run: |
-          php wp-cli.phar plugin install theme-check --activate --path=/tmp/wordpress
+          php wp-cli.phar plugin install https://github.com/WordPress/theme-check/archive/refs/heads/master.zip --activate --path=/tmp/wordpress
+          if ! php wp-cli.phar help theme-check --path=/tmp/wordpress >/dev/null 2>&1; then
+            php wp-cli.phar plugin list --path=/tmp/wordpress
+            php wp-cli.phar cli cmd-dump --path=/tmp/wordpress | head -n 200
+            echo "Theme Check WP-CLI command not available." >&2
+            exit 1
+          fi
           php wp-cli.phar theme-check run presstronic-legacy --format=table --path=/tmp/wordpress
